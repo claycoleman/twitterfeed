@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from .local import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -19,11 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fzmtu%ab1=t$_c%+kszh(1xxtmgp!-lahc%m*&(#l-^=*=#xp3'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -76,16 +72,6 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 
-DATABASES = {  
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'twitterfeed', 
-        'HOST': '127.0.0.1', 
-        'USER': 'root', 
-        'PASSWORD': 'q', 
-        'PORT': ''
-    }
-}
 
 
 # Internationalization
@@ -104,13 +90,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  
 
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'test.coleclayman@gmail.com'
-EMAIL_HOST_PASSWORD = 'testcoleclaymantest'
-EMAIL_USE_TLS = True
-
-
 USE_L10N = True
 
 USE_TZ = True
@@ -119,4 +98,3 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
