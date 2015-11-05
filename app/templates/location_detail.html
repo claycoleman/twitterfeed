@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{location.name}}</title>
+</head>
+<body>
+    <h1>{{location.name}}</h1>
+    <h2>What's Trending in {{location.name}}</h2>
+    <p>
+    {% for trend in location.trend_set.all %}
+        <a href="{% url 'trend_detail' trend.slug %}">{{trend.name}}</a>{% if forloop.counter0 < location.trend_set.all|length %}, {% endif %}
+    {% endfor %}
+    </p>
+    <a href="{% url 'map_view' %}">Back to world map!</a>
+</body>
+</html>

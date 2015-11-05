@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{tweet.text}}</title>
+</head>
+<body>
+    <h1>Tweet posted on {{tweet.created_at}}</h1>
+    
+    <h2><img src="{{tweet.profile_image.url}}">  by user {{tweet.screen_name}}</h2>
+
+    {% if tweet.location != None %}
+        <h3>Posted in {{tweet.location}}</h3>
+    {% endif %}
+    <hr>
+    <h3>Tweet Text -- {{tweet.text}}</h3>
+    <a href="{% url 'tweet_list' %}">Back to full list</a>
+</body>
+</html>
