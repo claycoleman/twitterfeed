@@ -12,7 +12,7 @@
                 <h1>{{location.name}}</h1>
                 <h2>What's Trending in {{location.name}}</h2>
                 <p>
-                {% for trend in location.trend_set.all %}
+                {% for trend in location.trend_set.all|slice:"0:10" %}
                     <p>{{ forloop.counter }}: <a href="{% url 'trend_detail' trend.slug %}">{{trend.name}}</a></p>
                 {% endfor %}
                 </p>

@@ -29,6 +29,8 @@ class Location(models.Model):
     def saveSlug(self):
         self.slug = self.name.replace(" ", "-").lower()
 
+    def __unicode__(self):
+            return self.name
     # def save(self, *args, **kwargs):
     #     if self.name != None:
     #         self.slug = self.name.replace(" ", "-").lower()

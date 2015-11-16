@@ -3,3 +3,5 @@ app/migrations/
 *.pyc
 .DS_Store
 local.py
+all.json
+

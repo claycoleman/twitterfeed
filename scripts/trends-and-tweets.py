@@ -54,6 +54,7 @@ pp = pprint.PrettyPrinter(indent=2)
 locations = Location.objects.all()
 while True:
     # print('\n')
+    print('\nStart')
     for count, new_location in enumerate(locations):
         successful = False
         while not successful:
@@ -95,6 +96,9 @@ while True:
             for tweet in response.json().get('statuses'):
                 new_tweet, created = Tweet.objects.get_or_create(tweet_id=tweet.get('id'))
                 if created:
+                    
+                    new_tweet.screen_name = str(unidecode(tweet.get('user').get('screen_name')))
+                    new_tweet.created_at = str(unidecode(tweet.get('user').get('created_at')))
                     try:
                         image_response = requests.get(str(unidecode(tweet.get('user').get('profile_image_url')))) 
                         temp_image = NamedTemporaryFile(delete=True)
@@ -102,8 +106,6 @@ while True:
                         new_tweet.profile_image.save('%s.jpg' % new_tweet.screen_name, File(temp_image)) 
                     except Exception, e:
                         print(e)
-                    new_tweet.screen_name = str(unidecode(tweet.get('user').get('screen_name')))
-                    new_tweet.created_at = str(unidecode(tweet.get('user').get('created_at')))
                     if tweet.get('user').get('location'):
                         new_tweet.location = str(unidecode(tweet.get('user').get('location')))
                     else:
@@ -123,10 +125,13 @@ while True:
         for counter, trend in enumerate(new_location.trend_set.all().order_by('-pk')):
             # print(trend.name + ": " + str(counter))
             if (counter >= 10):
-                trend.delete()
+                new_location.trend_set.remove(trend)
+                if len(trend.location.all()) is 0:
+                    print("deleted %s" % trend.name)
+                    trend.delete()
         new_location.saveSlug
         new_location.save()
-    time.sleep(15*60)
+
 
 
 

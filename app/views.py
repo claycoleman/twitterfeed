@@ -38,10 +38,10 @@ class TrendDetail(DetailView):
 
 def trend_list_view(request):
 
-    trends = Trend.objects.all().order_by('name')
+    locations = Location.objects.all()
 
     context = {}
-    context['trends'] = trends
+    context['locations'] = locations
 
     return render_to_response('trend_list.html', context, context_instance=RequestContext(request))
 
