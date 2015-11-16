@@ -1,47 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}
+    Full Tweet List
+{% endblock %}
+
+{% block body %}
+<div id="">
+    <div class="container">
     {% if is_paginated %}
 
     <div class="row">
         <div class="col-xs-10">
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    {% if 'search' in request.GET %}
-                        <a href="{{request.path}}?search={{request.GET.search}}&page={{ page_obj.previous_page_number }}">previous    </a>
-                    {% else %}
-                        <a href="{{request.path}}?page={{ page_obj.previous_page_number }}">previous    </a>
+            <div class="pagination">
+                <span class="page-links">
+                    {% if page_obj.has_previous %}
+                        {% if 'search' in request.GET %}
+                            <a href="{{request.path}}?search={{request.GET.search}}&page={{ page_obj.previous_page_number }}">previous    </a>
+                        {% else %}
+                            <a href="{{request.path}}?page={{ page_obj.previous_page_number }}">previous    </a>
+                        {% endif %}
+                        
                     {% endif %}
+                    <span class="page-current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
                     
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                
-                {% if page_obj.has_next %}
-                    {% if 'search' in request.GET %}
-                        <a href="{{request.path}}?search={{request.GET.search}}&page={{ page_obj.next_page_number }}">next    </a>
-                    {% else %}
-                        <a href="{{request.path}}?page={{ page_obj.next_page_number }}">next    </a>
+                    {% if page_obj.has_next %}
+                        {% if 'search' in request.GET %}
+                            <a href="{{request.path}}?search={{request.GET.search}}&page={{ page_obj.next_page_number }}">next    </a>
+                        {% else %}
+                            <a href="{{request.path}}?page={{ page_obj.next_page_number }}">next    </a>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-                <select  class="form-control"  name="pages" onchange="location = this.options[this.selectedIndex].value;">
-                    <option value="#">Select a page</option>
-                    {% for num in paginator.page_range %}
-                        <option value='{{request.path}}?page={{ page_obj.next_page_number }}'>Page {{num}}</option>
-                    {% endfor %}
-                </select>
-            </span>
-        </div>
-                </div>
+                    <select  class="form-control"  name="pages" onchange="location = this.options[this.selectedIndex].value;">
+                        <option value="#">Select a page</option>
+                        {% for num in paginator.page_range %}
+                            <option value='{{request.path}}?page={{num}}'>Page {{num}}</option>
+                        {% endfor %}
+                    </select>
+                </span>
             </div>
+        </div>
+    </div>
     {% endif %}
-    {% for tweet in tweets %}
-        <p>From {{tweet.screen_name}}: <a href="{% url 'tweet_detail' tweet.pk %}">{{tweet.text|slice:"0:50"}}...</a></p>
-    {% endfor %}
-</body>
-</html>
+
+    </div>
+</div>
+<div id='tweets'>
+    <div class="container pt">
+        <h3>Tweet list</h3>
+        <div class="row mt">   
+            {% for tweet in tweets %}
+            <div class="col-md-4">
+                <p>From {{tweet.screen_name}}: <a href="{% url 'tweet_detail' tweet.pk %}">{{tweet.text|slice:"0:50"}}...</a></p>
+            </div>
+            {% if forloop.counter|divisibleby:3 %}
+            </div>
+            <div class="row mt">
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

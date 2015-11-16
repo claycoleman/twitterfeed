@@ -47,5 +47,8 @@ class Trend(models.Model):
     inserted_to_database_at = models.DateTimeField(null=True, blank=True, auto_now=True)
     slug = models.SlugField(null=True, blank=True)
 
+    def __unicode__(self):
+            return self.name
+
     def saveSlug(self):
         self.slug = self.name.replace(" ", "-").lower()[:15]

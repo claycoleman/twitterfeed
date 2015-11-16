@@ -8,7 +8,7 @@ function byId(e){return document.getElementById(e);}
 
 // takes a string that contains coords eg - "227,307,261,309, 339,354, 328,371, 240,331"
 // draws a line from each co-ord pair to the next - assumes starting point needs to be repeated as ending point.
-function drawPoly(coOrdStr)
+function drawPoly(coOrdStr, fill)
 {
     var mCoords = coOrdStr.split(',');
     var i, n;
@@ -22,7 +22,9 @@ function drawPoly(coOrdStr)
     }
     hdc.lineTo(mCoords[0], mCoords[1]);
     hdc.stroke();
-
+    if (fill) {
+        hdc.fill();
+    }
 }
 
 function drawRect(coOrdStr)
@@ -47,7 +49,7 @@ function myHover(element)
     {
         case 'polygon':
         case 'poly':
-            drawPoly(coordStr);
+            drawPoly(coordStr, false);
             break;
 
         case 'rect':
@@ -94,12 +96,26 @@ function myInit()
     hdc = can.getContext('2d');
 
     // set the 'default' values for the colour/width of fill/stroke operations
-    hdc.fillStyle = 'rgb(0, 132, 180)';
-    hdc.strokeStyle = 'rgb(0, 132, 180)';
+    hdc.fillStyle = 'rgb(26, 188, 156)';
+    hdc.strokeStyle = 'rgb(26, 188, 156)';
     hdc.lineWidth = 3;
 }
 
 $('g').on('click', function(e) {
+
+    var coordStr = e.target.getAttribute('coords');
+    var areaType = e.target.getAttribute('shape');
+    switch (areaType)
+    {
+        case 'polygon':
+        case 'poly':
+            drawPoly(coordStr, true);
+            console.log('Nice')
+            break;
+
+        case 'rect':
+            drawRect(coordStr);
+    }
     console.log($(self).find('title').text());
     console.log(e.target.className.baseVal);
     console.log(e.target.id);

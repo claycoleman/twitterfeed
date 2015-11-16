@@ -27,6 +27,8 @@ urlpatterns = [
     # url(r'^map_view/$', 'app.views.map_view', name='map_view'),
     url(r'^location_detail/(?P<slug>.+)/$', views.LocationDetail.as_view(), name='location_detail'),
     url(r'^trend_detail/(?P<slug>.+)/$', views.TrendDetail.as_view(), name='trend_detail'),
+    url(r'^trend_list/$', 'app.views.trend_list_view', name='trend_list_view'),
     url(r'^nimda/', include(admin.site.urls)),
     url(r'^no_twitter_feed/$', 'app.views.no_twitter_feed', name='no_twitter_feed'),
+    url(r'^$', 'app.views.home', name='home'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

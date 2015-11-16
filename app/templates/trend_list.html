@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>What's trendin'</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% for trend in trends %}
+            <div class="col-md-4">
+            <h3><a href="{% url 'trend_detail' trend.slug %}">{{ trend }}</a></h3>
+            </div>
+            {% if forloop.counter|divisibleby:3 %}
+                </div>
+                <div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+{% if request.user.is_staff %}
+<a href = "#implement-later" alt = "trend_create_view" %}>Create a new trend</a>
+{% endif %}
+
+{% endblock %}

@@ -1,16 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{location.name}}</title>
-</head>
-<body>
-    <h1>{{location.name}}</h1>
-    <h2>What's Trending in {{location.name}}</h2>
-    <p>
-    {% for trend in location.trend_set.all %}
-        <a href="{% url 'trend_detail' trend.slug %}">{{trend.name}}</a>{% if forloop.counter0 < location.trend_set.all|length %}, {% endif %}
-    {% endfor %}
-    </p>
-    <a href="{% url 'map_view' %}">Back to world map!</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+    {{location.name}}
+{% endblock %}
+
+{% block body %}
+<div id="ww">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h1>{{location.name}}</h1>
+                <h2>What's Trending in {{location.name}}</h2>
+                <p>
+                {% for trend in location.trend_set.all %}
+                    <p>{{ forloop.counter }}: <a href="{% url 'trend_detail' trend.slug %}">{{trend.name}}</a></p>
+                {% endfor %}
+                </p>
+                <a href="{% url 'map_view' %}">Back to world map!</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

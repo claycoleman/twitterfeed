@@ -1,20 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{trend.name}}</title>
-</head>
-<body>
-    <h1>{{trend.name}}</h1>
-    <h2><a href="https://twitter.com/search?q={{trend.query}}">You can search for yourself here!</a></h2>
-    <h3>{{trend.name}} is trending in:</h3>
-    {% for location in trend.location.all %}
-        <p>{{location.name}}</p>
-    {% endfor %}
-    <h3>Tweet list</h3>
-    {% for tweet in trend.tweet_set.all %}
-        <p><strong>{{tweet.screen_name}}</strong>: {{tweet.text}} <a href="{% url 'tweet_detail' tweet.pk %}">-- see more info here!</a></p>
-    {% endfor %}
-    <hr>
-    <a href="javascript:history.back()">Go Back</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+    {{trend.name}}
+{% endblock %}
+
+{% block body %}
+<div id="ww">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1>{{trend.name}}</h1>
+                <h3>{{trend.name}} is trending in:</h3>
+                <p>
+                {% for location in trend.location.all %}
+                    {{location.name}}{% if forloop.last %}{% else %}, {% endif %}
+                {% endfor %}
+                </p>
+                <h5><a href="https://twitter.com/search?q={{trend.query}}">Search at Twitter.com</a></h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div id='tweets'>
+    <div class="container pt">
+        <h3>Tweet list</h3>
+        <div class="row mt">   
+            {% for tweet in trend.tweet_set.all %}
+            <div class="col-md-4">
+                <img src="{{tweet.profile_image.url}}">
+                <p><strong>{{tweet.screen_name}}</strong>: {{tweet.text}} <a href="{% url 'tweet_detail' tweet.pk %}">-- see more info here!</a></p>
+            </div>
+            {% if forloop.counter|divisibleby:3 %}
+            </div>
+            <div class="row mt">
+            {% endif %}
+            {% endfor %}
+            <hr>
+            <a href="javascript:history.back()">Go Back</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

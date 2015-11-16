@@ -1,18 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{tweet.text}}</title>
-</head>
-<body>
-    <h1>Tweet posted on {{tweet.created_at}}</h1>
-    
-    <h2><img src="{{tweet.profile_image.url}}">  by user {{tweet.screen_name}}</h2>
+{% extends "base.html" %}
 
-    {% if tweet.location != None %}
-        <h3>Posted in {{tweet.location}}</h3>
-    {% endif %}
-    <hr>
-    <h3>Tweet Text -- {{tweet.text}}</h3>
-    <a href="{% url 'tweet_list' %}">Back to full list</a>
-</body>
-</html>
+{% block title %}
+    {{tweet.text}}
+{% endblock %}
+
+{% block body %}
+<div id="ww">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1>Tweet posted on {{ tweet.created_at|date:"d/M/Y" }}</h1>
+                <h2><img src="{{tweet.profile_image.url}}">  @{{tweet.screen_name}}</h2>
+                 {% if tweet.location != None and tweet.location != "No location info" %}
+                    <h4>Posted in {{tweet.location}}</h4>
+                {% endif %}
+                <hr>
+                <h4>Tweet Text <span class="glyphicon small glyphicon-chevron-right"></span> {{tweet.text}}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

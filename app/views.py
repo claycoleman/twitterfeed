@@ -36,6 +36,16 @@ class TrendDetail(DetailView):
     context_object_name = 'trend'    
 
 
+def trend_list_view(request):
+
+    trends = Trend.objects.all().order_by('name')
+
+    context = {}
+    context['trends'] = trends
+
+    return render_to_response('trend_list.html', context, context_instance=RequestContext(request))
+
+
 class LocationList(ListView):
     model = Location
     template_name = 'map_view.html'
@@ -71,6 +81,12 @@ def no_twitter_feed(request):
 
     return render_to_response('no_twitter_feed.html', context, context_instance=RequestContext(request))
 
+
+def home(request):
+    context = {}
+    context['locations'] = Location.objects.all()[:4]
+
+    return render_to_response('home.html', context, context_instance=RequestContext(request))
 
 # def api_test(request):
 #     import requests, base64, json, tweepy, pprint, os, sys, urllib

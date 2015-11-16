@@ -1,12 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sorry!!</title>
-</head>
-<body>
-    <h1>{{loc_name}} isn't exactly tweet city...</h1>
-    <p>
-        Twitter doesn't have a devoted set of tweets for {{loc_name}}. Could be {{loc_reason}} Who knows. One day!!
-    </p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+    Sorry!
+{% endblock %}
+
+{% block body %}
+<div id="ww">
+    <div class="container">
+        <div class="row">
+            <a href="{% url 'map_view' %}" class="btn btn-default">Back to map</a>
+            <div class="col-lg-8 col-lg-offset-2">
+                <h1>{{loc_name}} isn't exactly tweet city...</h1>
+                <p>
+                    Twitter doesn't have a devoted set of tweets for {{loc_name}}. Could be {{loc_reason}} Who knows. One day!!
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
