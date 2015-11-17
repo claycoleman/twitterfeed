@@ -9,8 +9,9 @@
     <div id="ww">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2 centered">
-                    <img src="{% static 'assets/img/user.png' %}" alt="Stanley">
+                <img class="col-md-4 center-block img-responsive " src="{% static 'assets/img/twitter.png' %}" alt="Stanley">
+                <div class="col-md-8 centered">
+                    
                     <h1>TwitterFeed</h1>
                     <p>Welcome to <strong>TwitterFeed</strong>, a site designed to keep you updated on world events through the contributions of you - the people of the world.</p>
                     <p>TwitterFeed takes the top 10 trends from regions around the world, and stores 50 of their latest tweets here. Be the first to know as Twitter users around the world voice their thoughts.</p>
@@ -49,8 +50,8 @@
         <div class="row mt">
             <div class="col-md-6">
                 <h4>THE WAY IT WORKS</h4>
-                <p>Thanks to Twitter's public API, developers can access tweet and trend information at any given time. By running a Python script 24/7, this data can be accessed and posted onto TwitterFeed all day long. That means more current info for the world and more awesomeness for you.</p>
-            </div><!-- /comd-md-6 -->
+                <p>Thanks to Twitter's public API, we can access tweet and trend information at any given time. By running a Python script 24/7, this data can be accessed and posted onto TwitterFeed all day long. That means more current info for the world and more awesomeness for you!</p>
+            </div><!--/comd-md-6 -->
             
             <div class="col-md-6">
                 <h4>THE RATINGS</h4>
@@ -78,7 +79,16 @@
             </div><!-- /col-md-6 -->
         </div><!-- /row -->
     </div><!-- /container -->
-    
+    <div id="ww">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2 centered">
+                    <h1><a href="{% url 'trend_list_view' %}" class="btn-lg btn-primary">Get Started!</a></h1>
+                </div><!-- /col-md-8 -->
+            </div><!-- /row -->
+        </div> <!-- /container -->
+    </div><!-- /ww -->
+
     
     <!-- +++++ Footer Section +++++ -->
 {% endblock %}

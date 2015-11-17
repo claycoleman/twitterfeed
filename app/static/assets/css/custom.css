@@ -1,4 +1,6 @@
-
+.btn-primary {
+    background-color: rgb(26, 188, 156);
+}
 body
 {
     background-color: gray;

@@ -101,23 +101,15 @@ function myInit()
     hdc.lineWidth = 3;
 }
 
-$('g').on('click', function(e) {
+$(document).ready(function() {
+    $('.country').children('path').addClass("country-path");
 
-    var coordStr = e.target.getAttribute('coords');
-    var areaType = e.target.getAttribute('shape');
-    switch (areaType)
-    {
-        case 'polygon':
-        case 'poly':
-            drawPoly(coordStr, true);
-            console.log('Nice')
-            break;
 
-        case 'rect':
-            drawRect(coordStr);
-    }
-    console.log($(self).find('title').text());
-    console.log(e.target.className.baseVal);
+    console.log('Added!')
+});
+
+$('.country').on('click', function(e) {
+    console.log('Clicked')
     console.log(e.target.id);
 });
 
