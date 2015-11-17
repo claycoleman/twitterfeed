@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django import forms
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -74,12 +74,45 @@ def no_twitter_feed(request):
     elif loc in "madagascar": 
         loc_name = "Madagascar"
         loc_reason = "because... wait, do they even have internet in Madagascar?!"
+    elif loc in "antarctica":
+        loc_name = "Antarctica"
+        loc_reason = "because... hold on, did actually you think there actually would be tweets from Antarctica?"
     else:
         return redirect('map_view')
     context['loc_name'] = loc_name
     context['loc_reason'] = loc_reason
 
     return render_to_response('no_twitter_feed.html', context, context_instance=RequestContext(request))
+
+
+def location_changer(request):
+    title = request.GET.get('title') 
+    if title == 'Africa':
+        title = 'Nigeria'
+    elif title == 'Middle East':
+        title = 'United Arab'
+    elif title == 'South America':
+        title = 'Peru'
+    elif title == 'Pacific Islands':
+        title = 'New Zealand'
+    elif title == 'Central America':
+        title = 'Guatemala'
+    elif title == 'Central Europe':
+        title = 'Germany'
+    elif title == "Eastern Europe":
+        title = 'Russia'
+    elif title == "Southeast Asia":
+        title = 'Indonesia'
+    elif title in ['China', 'Madagascar', 'Greenland', 'Antarctica']:
+        title = 'no_twitter_feed/?loc=%s' % title.lower()
+        return JsonResponse({'location':[title]}, safe=False)
+    api_dict = {}
+    location = []
+    api_dict['location'] = location
+    loc = Location.objects.get(name__icontains=title)
+    location.append("location_detail/%s/" % loc.slug)
+
+    return JsonResponse(api_dict, safe=False)
 
 
 def home(request):

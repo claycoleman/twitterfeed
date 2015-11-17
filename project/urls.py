@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^nimda/', include(admin.site.urls)),
     url(r'^no_twitter_feed/$', 'app.views.no_twitter_feed', name='no_twitter_feed'),
     url(r'^$', 'app.views.home', name='home'),
+    url(r'^location-changer/$', 'app.views.location_changer', name='location_changer'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,115 +1,96 @@
 
-// stores the device context of the canvas we use to draw the outlines
-// initialized in myInit, used in myHover and myLeave
-var hdc;
-
-// shorthand func
-function byId(e){return document.getElementById(e);}
-
-// takes a string that contains coords eg - "227,307,261,309, 339,354, 328,371, 240,331"
-// draws a line from each co-ord pair to the next - assumes starting point needs to be repeated as ending point.
-function drawPoly(coOrdStr, fill)
-{
-    var mCoords = coOrdStr.split(',');
-    var i, n;
-    n = mCoords.length;
-
-    hdc.beginPath();
-    hdc.moveTo(mCoords[0], mCoords[1]);
-    for (i=2; i<n; i+=2)
-    {
-        hdc.lineTo(mCoords[i], mCoords[i+1]);
-    }
-    hdc.lineTo(mCoords[0], mCoords[1]);
-    hdc.stroke();
-    if (fill) {
-        hdc.fill();
-    }
+function mouseOverCountryGroup(countryCode) {
+    $('.' + countryCode).children().css({fill: "rgb(26, 188, 156)", transition: "0.4s"});
+    $('.' + countryCode).css({fill: "rgb(26, 188, 156)", transition: "0.4s"});
 }
 
-function drawRect(coOrdStr)
-{
-    var mCoords = coOrdStr.split(',');
-    var top, left, bot, right;
-    left = mCoords[0];
-    top = mCoords[1];
-    right = mCoords[2];
-    bot = mCoords[3];
-    hdc.strokeRect(left,top,right-left,bot-top); 
-
+function mouseOutCountryGroup(countryCode) {
+    $('.' + countryCode).children().css({fill: "rgb(224, 224, 224)", transition: "0.4s"});
+    $('.' + countryCode).css({fill: "rgb(224, 224, 224)", transition: "0.4s"});  
 }
 
-function myHover(element)
-{
-    var hoveredElement = element;
-    var coordStr = element.getAttribute('coords');
-    var areaType = element.getAttribute('shape');
+function clickCountryGroup(countryCode) {
+    $('.' + countryCode).children().attr('style','fill: rgb(239, 167, 99);');
+    $('.' + countryCode).attr('style','fill: rgb(239, 167, 99);');
+}
 
-    switch (areaType)
-    {
-        case 'polygon':
-        case 'poly':
-            drawPoly(coordStr, false);
+function checkIfOtherClass(country, method) {
+    var countryCode = ""
+    if (country.attr('class').indexOf('pe') > -1) {
+        countryCode = 'pe'
+    } else if (country.attr('class').indexOf('africa') > -1) {
+        countryCode = 'africa'
+    } else if (country.attr('class').indexOf('sea') > -1) {
+        countryCode = 'sea'
+    } else if (country.attr('class').indexOf('pacific') > -1) {
+        countryCode = 'pacific'
+    } else if (country.attr('class').indexOf('mideast') > -1) {
+        countryCode = 'mideast'
+    } else if (country.attr('class').indexOf('gb') > -1) {
+        countryCode = 'gb'
+    } else if (country.attr('class').indexOf('kr') > -1) {
+        countryCode = 'kr'
+    } else if (country.attr('class').indexOf('ru') > -1) {
+        countryCode = 'ru'
+    } else if (country.attr('class').indexOf('cnx') > -1) {
+        countryCode = 'cnx'
+    } else if (country.attr('class').indexOf('ceneuro') > -1) {
+        countryCode = 'ceneuro'
+    } else if (country.attr('class').indexOf('cenamer') > -1) {
+        countryCode = 'cenamer'
+    }
+
+    if (countryCode != "") {
+        switch(method) {
+        case 0:
+            clickCountryGroup(countryCode);
             break;
-
-        case 'rect':
-            drawRect(coordStr);
+        case 1:
+            mouseOverCountryGroup(countryCode);
+            break;
+        case 2:
+            mouseOutCountryGroup(countryCode);
+            break;
+        }
     }
+    return countryCode != "";
 }
 
-function myLeave()
-{
-    var canvas = byId('myCanvas');
-    hdc.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-function myInit()
-{
-    // get the target image
-    var img = byId('img-imgmap201293016112');
-
-    var x,y, w,h;
-
-    // get it's position and width+height
-    x = img.offsetLeft;
-    y = img.offsetTop;
-    w = img.clientWidth;
-    h = img.clientHeight;
-
-    // move the canvas, so it's contained by the same parent as the image
-    var imgParent = img.parentNode;
-    var can = byId('myCanvas');
-    imgParent.appendChild(can);
-
-    // place the canvas in front of the image
-    can.style.zIndex = 1;
-
-    // position it over the image
-    can.style.left = x+'px';
-    can.style.top = y+'px';
-
-    // make same size as the image
-    can.setAttribute('width', w+'px');
-    can.setAttribute('height', h+'px');
-
-    // get it's context
-    hdc = can.getContext('2d');
-
-    // set the 'default' values for the colour/width of fill/stroke operations
-    hdc.fillStyle = 'rgb(26, 188, 156)';
-    hdc.strokeStyle = 'rgb(26, 188, 156)';
-    hdc.lineWidth = 3;
-}
-
-$(document).ready(function() {
-    $('.country').children('path').addClass("country-path");
 
 
-    console.log('Added!')
-});
 
 $('.country').on('click', function(e) {
-    console.log('Clicked')
-    console.log(e.target.id);
+    if (!checkIfOtherClass($(this), 0)) {
+        $(this).children().attr('style','fill: rgb(239, 167, 99);');
+        $(this).attr('style','fill: rgb(239, 167, 99);');
+    }
+    var title = $(this).children('title').text();
+    if (!title) {
+        title = $(this).parent('title').text();
+    }
+    console.log($(this).children('title').text());
+    $.ajax({
+        type: "GET",
+        url: "/location-changer/",
+        data: {
+            title: title
+        },
+        success: function(data) {
+            window.location.href = window.location.href.replace('map_view/', data['location'][0])
+        }
+    });
 });
 
+$('.country').on('mouseover', function(e) {
+    if (!checkIfOtherClass($(this), 1)) {
+        $(this).css({fill: "rgb(26, 188, 156)", transition: "0.4s"});
+        $(this).children().css({fill: "rgb(26, 188, 156)", transition: "0.4s"});
+    }
+});
+
+$('.country').on('mouseout', function(e) {
+    if (!checkIfOtherClass($(this), 2)) {
+        $(this).css({fill: "rgb(224, 224, 224)", transition: "0.4s"});
+        $(this).children().css({fill: "rgb(224, 224, 224)", transition: "0.4s"});
+    }
+});
