@@ -10,3 +10,8 @@ canvas
     pointer-events: none;       /* make the canvas transparent to the mouse - needed since canvas is position infront of image */
     position: absolute;
 }
+
+a.exclusive
+{
+    color: rgb(50, 118, 177);
+}

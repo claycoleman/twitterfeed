@@ -10,8 +10,8 @@ function mouseOutCountryGroup(countryCode) {
 }
 
 function clickCountryGroup(countryCode) {
-    $('.' + countryCode).children().attr('style','fill: rgb(239, 167, 99);');
-    $('.' + countryCode).attr('style','fill: rgb(239, 167, 99);');
+    $('.' + countryCode).children().attr('style','fill: rgb(50, 118, 177);');
+    $('.' + countryCode).attr('style','fill: rgb(50, 118, 177);');
 }
 
 function checkIfOtherClass(country, method) {
@@ -61,8 +61,8 @@ function checkIfOtherClass(country, method) {
 
 $('.country').on('click', function(e) {
     if (!checkIfOtherClass($(this), 0)) {
-        $(this).children().attr('style','fill: rgb(239, 167, 99);');
-        $(this).attr('style','fill: rgb(239, 167, 99);');
+        $(this).children().attr('style','fill: rgb(50, 118, 177);');
+        $(this).attr('style','fill: rgb(50, 118, 177);');
     }
     var title = $(this).children('title').text();
     if (!title) {
