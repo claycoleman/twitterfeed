@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 from __future__ import absolute_import, print_function
-import requests, base64, json, tweepy, pprint, os, sys, urllib, time
+import requests, base64, json, tweepy, pprint, os, sys, urllib, datetime, time
 from unidecode import unidecode
 
 sys.path.append('..')
@@ -56,7 +56,9 @@ locations = Location.objects.all()
 if True: # run the script one time through for crontab
     # print('\n')
     print('\nStart')
+    start_time = datetime.datetime.now()
     for count, new_location in enumerate(locations):
+        print(new_location)
         successful = False
         while not successful:
             try:
