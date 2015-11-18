@@ -53,4 +53,4 @@ class Trend(models.Model):
             return self.name
 
     def saveSlug(self):
-        self.slug = self.name.replace(" ", "-").lower()[:15]
+        self.slug = self.name.replace(" ", "-").lower()[:35]

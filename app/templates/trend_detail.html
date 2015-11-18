@@ -17,6 +17,7 @@
                     <a href="{% url 'location_detail' location.slug %}">{{location.name}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
                 </p>
+                <a class="btn btn-primary" href="https://www.google.com/search?q={{ trend.query }}&tbm=nws">Search Google News for {{ trend.name }}</a>
             </div>
         </div>
     </div>

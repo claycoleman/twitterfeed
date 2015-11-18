@@ -52,7 +52,8 @@ pp = pprint.PrettyPrinter(indent=2)
 # Australia 23424748. Guatemala 23424834. UAE 23424738. NZ 23424916.
 # Portugal 23424925. Germany 23424829. Peru 23424919. Korea 23424868
 locations = Location.objects.all()
-while True:
+# while True: # iterate the script for system running 
+if True: # run the script one time through for crontab
     # print('\n')
     print('\nStart')
     for count, new_location in enumerate(locations):
@@ -116,6 +117,10 @@ while True:
             for counter, tweet in enumerate(new_trend.tweet_set.all().order_by('-pk')):
                 # print(tweet.tweet_id + ": " + str(counter))
                 if (counter >= 50):
+                    try:
+                        os.remove(tweet.profile_image.file.name)
+                    except Exception, e:
+                        pass
                     tweet.delete()
             new_trend.location.add(new_location)
             new_trend.saveSlug()
@@ -127,7 +132,13 @@ while True:
             if (counter >= 10):
                 new_location.trend_set.remove(trend)
                 if len(trend.location.all()) is 0:
-                    print("deleted %s" % trend.name)
+                    print("deleted trend %s" % trend.name)
+                    for twit in trend.tweet_set.all():
+                        try:
+                            os.remove(twit.profile_image.file.name)
+                            print('deleted pic')
+                        except Exception, e:
+                            pass
                     trend.delete()
         new_location.saveSlug
         new_location.save()
