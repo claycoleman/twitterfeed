@@ -17,7 +17,7 @@
                     <a href="{% url 'location_detail' location.slug %}">{{location.name}}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
                 </p>
-                <a class="btn btn-primary" href="https://www.google.com/search?q={{ trend.query }}&tbm=nws">Search Google News for {{ trend.name }}</a>
+                <a target="_blank" class="btn btn-primary" href="https://www.google.com/search?q={{ trend.query }}&tbm=nws">Search Google News for {{ trend.name }}</a>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
             {% endfor %}
             </div>
             <hr>
-            <a href="https://twitter.com/search?q={{trend.query}}" class="btn btn-primary text-center">See the search at twitter.com...</a>
+            <a target="_blank" href="https://twitter.com/search?q={{trend.query}}" class="btn btn-primary text-center">See the search at twitter.com...</a>
         </div>
     </div>
 </div>
