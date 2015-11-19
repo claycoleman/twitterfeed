@@ -1,3 +1,8 @@
+$(function() {
+    if (window.innerWidth >= 768) {
+        $('#nav').addClass('shorter');
+    }
+});
 
 function mouseOverCountryGroup(countryCode) {
     $('.' + countryCode).children().css({fill: "rgb(26, 188, 156)", transition: "0.4s"});

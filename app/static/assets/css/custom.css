@@ -15,3 +15,8 @@ a.exclusive
 {
     color: rgb(50, 118, 177);
 }
+
+.shorter
+{
+    max-height: 100px; 
+}

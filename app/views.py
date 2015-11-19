@@ -170,5 +170,5 @@ def home(request):
 #     return HttpResponse(test)
 
 # cd /Users/claycoleman/Dev/projects/twitterfeed/scripts/ && /Users/claycoleman/Dev/virtualenvs/twitterfeed/bin/python /Users/claycoleman/Dev/projects/twitterfeed/scripts/trends-and-tweets.py
-# /sites/projects/twitterfeed/scripts && /sites/virtualenvs/twitterfeed/bin/python /sites/projects/twitterfeed/scripts/trends-and-tweets.py
+# cd /sites/projects/twitterfeed/scripts && /sites/virtualenvs/twitterfeed/bin/python /sites/projects/twitterfeed/scripts/trends-and-tweets.py
 
