@@ -18,6 +18,7 @@ class TweetUpdateForm(forms.Form):
     info = forms.CharField(required=False, widget=forms.Textarea)
     image = forms.ImageField(required=False)
 
+
 def tweet_detail_view(request, pk):  
     try:
         tweet = Tweet.objects.get(pk=pk)
