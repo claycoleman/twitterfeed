@@ -1,4 +1,6 @@
 #! /usr/bin/env python
+
+# main package imports
 from __future__ import absolute_import, print_function
 import requests, base64, json, tweepy, pprint, os, sys, urllib, datetime, time
 from unidecode import unidecode
@@ -6,11 +8,13 @@ from unidecode import unidecode
 sys.path.append('..')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 
-from app.models import Location, Trend, Tweet
+# django and project imports
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from django.conf import settings
-from project.local import CONSUMER_KEY, CONSUMER_SECRET
+
+from app.models import Location, Trend, Tweet
+from project.local import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY
 
 import django
 django.setup()
@@ -19,7 +23,6 @@ django.setup()
 #the base twitter url for sending api requests
 URL = 'https://api.twitter.com/oauth2/token'
 
-#the search term to be used
 credentials = base64.urlsafe_b64encode("%s:%s" % (CONSUMER_KEY, CONSUMER_SECRET))
 custom_headers = {
         'Authorization': 'Basic %s' % (credentials),
@@ -27,50 +30,31 @@ custom_headers = {
     }
 grant_type_data = 'grant_type=client_credentials'
 response = requests.post(URL, headers=custom_headers, data=grant_type_data)
-# print response.json()
 
 access_token = response.json().get('access_token')
 search_headers = {'Authorization': 'Bearer %s' % (access_token), }
 
-access_token = "3972931574-TBQCKeBRwpWKrcxoecGmIlb6OYUdawcNYtwJTEJ"
-access_token_secret = "LoUKpnhj6MS0SdlE1bE4TpvIJejT9nk6p1t3gwWkxVYff"
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.secure = True
-auth.set_access_token(access_token, access_token_secret)
+auth.set_access_token(ACCESS_KEY, ACCESS_KEY_SECRET)
 
 api = tweepy.API(auth)
 pp = pprint.PrettyPrinter(indent=2)
 
-# country codes! World 1. USA 23424977. Mexico 23424900. Canada 23424775.
-# Japan 23424856. Brazil 23424768. UK 23424975. China 23424781. Russia 23424936.
-# Southeast Asia 23424846. Africa 23424908. France 23424819. Spain 23424950. 
-# Australia 23424748. Guatemala 23424834. UAE 23424738. NZ 23424916.
-# Portugal 23424925. Germany 23424829. Peru 23424919. Korea 23424868
 
-
-
-# if True:
-
-#     place = api.trends_place(id=23424975)[0]
-#     location_info = place.get('locations')[0]
-
-#     new_location, created = Location.objects.get_or_create(name=str(unidecode(location_info.get('name'))))
-#     new_location.woeid = location_info.get('woeid')
-#     new_location.saveSlug
-   # pp.pprint(location_info)
 
 
 locations = Location.objects.all()
 print('\nStart')
 start_time = datetime.datetime.now()
-for count, new_location in enumerate(locations):
+for count, location in enumerate(locations):
     print(" ")
-    print("%d.) %s" % (count, new_location.name))
+    print("%d.) %s" % (count, location.name))
     successful = False
     while not successful:
         try:
-            place = api.trends_place(id=new_location.woeid)[0]
+            place = api.trends_place(id=location.woeid)[0]
             successful = True
         except Exception, e:
             print(e)
@@ -87,13 +71,14 @@ for count, new_location in enumerate(locations):
         new_trend.url = str(unidecode(trend.get('url'))) 
         new_trend.query = str(unidecode(trend.get('query')))
         
-        # + ('+place:{}'.format(new_location.place_id))
+        # + ('+place:{}'.format(location.place_id))
 
         SEARCH_TERM = new_trend.name  
         SEARCH_TERM = urllib.quote_plus(SEARCH_TERM)
 
 
         response = requests.get('https://api.twitter.com/1.1/search/tweets.json?q={}&with_twitter_user_id=true&count=50'.format(SEARCH_TERM), headers=search_headers)
+        
         incre = 0
         for tweet in response.json().get('statuses'):
             incre += 1
@@ -115,6 +100,7 @@ for count, new_location in enumerate(locations):
             new_tweet.text = str(unidecode(tweet.get('text')))
             new_tweet.trend = new_trend
             new_tweet.save()
+
         for counter, tweet in enumerate(new_trend.tweet_set.all().order_by('-pk')):
             if (counter >= 50):
                 try:
@@ -122,28 +108,44 @@ for count, new_location in enumerate(locations):
                 except Exception, e:
                     pass
                 tweet.delete()
-        new_trend.location.add(new_location)
+        new_trend.location.add(location)
         new_trend.saveSlug()
         new_trend.save()
-    for counter, trend in enumerate(new_location.trend_set.all().order_by('-pk')):
+    for counter, trend in enumerate(location.trend_set.all().order_by('-pk')):
         # print(trend.name + ": " + str(counter))
         if (counter >= 10):
-            new_location.trend_set.remove(trend)
+            location.trend_set.remove(trend)
             if len(trend.location.all()) is 0:
-                print("deleted trend %s" % trend.name)
                 for twit in trend.tweet_set.all():
                     try:
                         os.remove(twit.profile_image.file.name)
-                        print('deleted pic')
                     except Exception, e:
                         pass
                 trend.delete()
-    new_location.saveSlug
-    new_location.save()
+    location.saveSlug
+    location.save()
 
 
 
 
+
+# country codes! World 1. USA 23424977. Mexico 23424900. Canada 23424775.
+# Japan 23424856. Brazil 23424768. UK 23424975. China 23424781. Russia 23424936.
+# Southeast Asia 23424846. Africa 23424908. France 23424819. Spain 23424950. 
+# Australia 23424748. Guatemala 23424834. UAE 23424738. NZ 23424916.
+# Portugal 23424925. Germany 23424829. Peru 23424919. Korea 23424868
+
+
+
+# if True:
+
+#     place = api.trends_place(id=23424975)[0]
+#     location_info = place.get('locations')[0]
+
+#     new_location, created = Location.objects.get_or_create(name=str(unidecode(location_info.get('name'))))
+#     new_location.woeid = location_info.get('woeid')
+#     new_location.saveSlug
+   # pp.pprint(location_info)
 
 
 # If the application settings are set for "Read and Write" then

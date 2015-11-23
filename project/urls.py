@@ -22,11 +22,12 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^tweet_list/$', views.TweetList.as_view(), name="tweet_list"),
     # url(r'^$', 'app.views.api_test', name="api_test"),
-    url(r'^tweet_detail/(?P<pk>\d+)/$', views.TweetDetail.as_view(), name="tweet_detail"),
+
+    url(r'^tweet_detail/(?P<pk>\d+)/$', 'app.views.tweet_detail_view', name="tweet_detail"),
     url(r'^map_view/$', views.LocationList.as_view(), name="map_view"),
     # url(r'^map_view/$', 'app.views.map_view', name='map_view'),
     url(r'^location_detail/(?P<slug>.+)/$', views.LocationDetail.as_view(), name='location_detail'),
-    url(r'^trend_detail/(?P<slug>.+)/$', views.TrendDetail.as_view(), name='trend_detail'),
+    url(r'^trend_detail/(?P<slug>.+)/$', 'app.views.trend_detail_view', name='trend_detail'),
     url(r'^trend_list/$', 'app.views.trend_list_view', name='trend_list_view'),
     url(r'^nimda/', include(admin.site.urls)),
     url(r'^no_twitter_feed/$', 'app.views.no_twitter_feed', name='no_twitter_feed'),

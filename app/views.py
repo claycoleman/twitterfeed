@@ -18,10 +18,18 @@ class TweetUpdateForm(forms.Form):
     info = forms.CharField(required=False, widget=forms.Textarea)
     image = forms.ImageField(required=False)
 
-class TweetDetail(DetailView):
-    model = Tweet
-    template_name = 'tweet_detail.html'
-    context_object_name = 'tweet'
+def tweet_detail_view(request, pk):  
+    try:
+        tweet = Tweet.objects.get(pk=pk)
+    except Exception, e:
+        return redirect('trend_list_view')
+
+    context = {}
+    context['tweet'] = tweet
+
+    return render_to_response('tweet_detail.html', context, context_instance=RequestContext(request))
+
+
 
 
 class LocationDetail(DetailView):
@@ -30,10 +38,16 @@ class LocationDetail(DetailView):
     context_object_name = 'location'
 
 
-class TrendDetail(DetailView):
-    model = Trend
-    template_name = 'trend_detail.html'
-    context_object_name = 'trend'    
+def trend_detail_view(request, slug):  
+    try:
+        trend = Trend.objects.get(slug=slug)
+    except Exception, e:
+        return redirect('trend_list_view')
+
+    context = {}
+    context['trend'] = trend
+
+    return render_to_response('trend_detail.html', context, context_instance=RequestContext(request))
 
 
 def trend_list_view(request):
