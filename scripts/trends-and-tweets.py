@@ -14,7 +14,7 @@ from django.core.files.temp import NamedTemporaryFile
 from django.conf import settings
 
 from app.models import Location, Trend, Tweet
-from project.local import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY
+from project.local import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY, ACCESS_KEY_SECRET
 
 import django
 django.setup()
